@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+@import url("https://fonts.googleapis.com/css2?family=Courgette&display=swap");
+
+
+@layer utilities {
+    .graybg {
+        background: #2344eb;
+        background: linear-gradient(120deg, rgba(35, 68, 235, 1) 0%, rgba(171, 255, 251, 1) 32%, rgba(235, 235, 176, 1) 63%, rgba(255, 200, 0, 1) 100%);
+    }
+}
+
+@layer utilities {
+    .oleoScript {
+        font-family: "Oleo Script", system-ui;
+
+    }
+
+    .textScript {
+        font-family: "Courgette", cursive;
+    }
+
+    .lobsterScript {
+        font-family: "Lobster", sans-serif;
+    }
+}
+
