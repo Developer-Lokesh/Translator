@@ -1,7 +1,6 @@
 import languages from '../languages';
 import { useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
-// import { Mic } from 'lucide-react';
 
 const Translate = () => {
     const [text, setText] = useState("");
@@ -14,87 +13,102 @@ const Translate = () => {
     const maxChar = 300;
 
     const switchLanguage = () => {
-        // language swap
-        const temp = fromLanguage
+        const temp = fromLanguage;
         setFromLanguage(toLanguage);
         setToLanguage(temp);
 
-        // language code swap
         const tempCode = fromlangCode;
         setFromLangCode(tolangCode);
         setToLangCode(tempCode);
-    }
-
-    const fromlanguageHandler = (e) => {
-        const selectFrom = e.target.value;
-        setFromLangCode(selectFrom);
-        setFromLanguage(languages[selectFrom]);
-    }
-
-    const tolanguageHandler = (e) => {
-        const selectTo = e.target.value;
-        setToLangCode(selectTo);
-        setToLanguage(languages[selectTo]);
-    }
+    };
 
     const inputHandler = (e) => {
         const value = e.target.value.slice(0, maxChar);
-
         setText(value);
-        setChar(value.length)
-
-    }
+        setChar(value.length);
+    };
 
     const translateBtnHandler = async () => {
-        try {
-            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromlangCode}|${tolangCode}`);
-            const data = await res.json();
-            setResult(data.responseData.translatedText);
-        } catch (error) {
-            console.log(error);
-            setResult(error)
-        }
-    }
-
-
+        const res = await fetch(
+            `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${fromlangCode}|${tolangCode}`
+        );
+        const data = await res.json();
+        setResult(data.responseData.translatedText);
+    };
 
     return (
-        <div className='bg-black flex flex-col justify-center items-center rounded-3xl'>
-            <h1 className="text-9xl bebas font-bold p-4 text-center italic text-white ">Translator </h1>
-            <div className="flex  gap-4 w-[calc(100%-10%)]  items-center justify-center p-4 ">
-                <div className="flex gap-5 justify-center-safe p-4 bg-[#232b2b] rounded-2xl">
-                    <p className="text-5xl italic text-white lobsterScript ">from  </p>
+        <div className="bg-black min-h-screen flex flex-col items-center px-4">
+            <h1 className="text-4xl md:text-6xl lg:text-9xl font-bold italic text-white mt-6 text-center">
+                Translator
+            </h1>
 
-                    <select value={fromlangCode} onChange={fromlanguageHandler} className='p-4 border-gray-400 border-2 rounded-2xl text-white'>
+            <div className="flex flex-col md:flex-row gap-4 w-full max-w-6xl justify-center items-center mt-6">
+
+                <div className="flex gap-3 bg-[#232b2b] p-4 rounded-2xl w-full md:w-auto">
+                    <p className="text-xl md:text-3xl text-white italic">From</p>
+                    <select
+                        value={fromlangCode}
+                        onChange={(e) => setFromLangCode(e.target.value)}
+                        className="flex-1 bg-transparent border-2 border-gray-400 rounded-xl p-2 text-white"
+                    >
                         {Object.entries(languages).map(([code, lang]) => (
-                            <option key={code} value={code} className='bg-[#3b444b] text-white  scrollbar-hide '>{lang}</option>
+                            <option key={code} value={code} className="bg-[#3b444b]">
+                                {lang}
+                            </option>
                         ))}
                     </select>
-
                 </div>
 
-                <button onClick={switchLanguage} className='bg-white p-6 rounded-full graybg text-red-600'><ArrowRightLeft width={40} height={40} /></button>
+                <button
+                    onClick={switchLanguage}
+                    className="bg-white p-4 rounded-full text-red-600"
+                >
+                    <ArrowRightLeft size={28} />
+                </button>
 
-                <div className="flex gap-5  bg-[#232b2b] justify-center-safe p-4 rounded-2xl">
-                    <p className="text-5xl italic text-white oleo">to</p>
-
-                    <select value={tolangCode} onChange={tolanguageHandler} className='p-4 border-gray-400 border-2 rounded-2xl text-white'>
+                <div className="flex gap-3 bg-[#232b2b] p-4 rounded-2xl w-full md:w-auto">
+                    <p className="text-xl md:text-3xl text-white italic">To</p>
+                    <select
+                        value={tolangCode}
+                        onChange={(e) => setToLangCode(e.target.value)}
+                        className="flex-1 bg-transparent border-2 border-gray-400 rounded-xl p-2 text-white"
+                    >
                         {Object.entries(languages).map(([code, lang]) => (
-                            <option key={code} value={code} className='bg-[#3b444b] text-white  scrollbar-hide '>{lang}</option>
+                            <option key={code} value={code} className="bg-[#3b444b]">
+                                {lang}
+                            </option>
                         ))}
                     </select>
-
                 </div>
             </div>
 
-            <textarea onChange={inputHandler} value={text} cols="50" rows="10" className="border w-[calc(100%-10%)] textScript mt-10 rounded-3xl bg-[#232b2b] outline-none p-4 text-white text-4xl" />
-            <div className='flex w-[calc(100%-15%)] justify-end items-end'><p className='text-3xl text-gray-400 mt-2 animation' >{char}/{maxChar}</p></div>
-            {/* <button className='bg-white mt-10 p-6 w-[calc(100%-10%)] border-4 border-red-500 graybg rounded-2xl text-3xl font-bold flex items-center justify-center'><Mic width={50} height={50}/> Tap to speak</button> */}
-            <button onClick={translateBtnHandler} className='bg-white mt-10 p-6 w-[calc(100%-10%)] rounded-2xl text-3xl font-bold'>Translate</button>
-            <textarea value={result} cols="50" rows="10" className="border w-[calc(100%-10%)] bg-[#232b2b] rounded-3xl mt-14 mb-10 outline-none p-4 text-white text-4xl" readOnly />
+            <textarea
+                value={text}
+                onChange={inputHandler}
+                rows="6"
+                className="w-full max-w-6xl mt-8 p-4 rounded-2xl bg-[#232b2b] text-white text-lg md:text-2xl outline-none"
+            />
 
+            <div className="w-full max-w-6xl text-right text-gray-400">
+                {char}/{maxChar}
+            </div>
+
+            <button
+                onClick={translateBtnHandler}
+                className="bg-white mt-6 w-full max-w-6xl py-4 rounded-2xl text-xl font-bold"
+            >
+                Translate
+            </button>
+
+            <textarea
+                value={result}
+                readOnly
+                rows="6"
+                className="w-full max-w-6xl mt-8 mb-10 p-4 rounded-2xl bg-[#232b2b] text-white text-lg md:text-2xl outline-none"
+            />
         </div>
-    )
-}
+    );
+};
 
-export default Translate
+export default Translate;
+
